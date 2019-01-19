@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#002d4d" />
-    <title>客页 | KEEER</title>
+    <title>自动评教</title>
     <style>
     html,body{
       width: 100%;
@@ -24,13 +24,14 @@
     #wrapper{
       display: inline-block;
       width: 100%;
+      padding: 20px;
     }
     @media (min-width: 620px) {
       #wrapper{
         width: 600px;
       }
       #logo{
-        height: 128px;
+        height: 64px;
       }
     }
     @media (max-width: 619px) {
@@ -41,17 +42,17 @@
         font-size: 18px;
       }
       #logo{
-        height: 64px;
+        height: 32px;
       }
     }
-    #links>a{
+    a.link{
       text-decoration: none;
       color: #002d4d;
       margin: 10px;
       position: relative;
       display: inline-block;
     }
-    #links>a::before{
+    a.link::before{
       position: absolute;
       top: auto;
       bottom: -2px;
@@ -62,25 +63,19 @@
       background-color: #002d4d;
     }
     #logo{
-      padding: 20px;
+      padding: 10px;
+      height: 30px;
     }
     </style>
   </head>
   <body>
     <div id="wrapper">
+      <p>在电脑上打开此页；</p>
+      <a class="link" href="javascript:document.getElementById('pageContent').contentDocument.getElementById('pageContent').contentDocument.querySelectorAll('[value*=&quot;A.很好&quot;]').forEach(function(el){el.parentElement.parentElement.click()});" onclick="javascript:alert('不要点我！拖我！');event.preventDefault();">自动评教</a>←拖我到浏览器书签栏
+      <p>然后在评教页面点击这个标签，最后提交。</p>
+      <p>客页KEEER良心出品。</p>
+      <p>显示书签栏方法：Chrome：按 ctrl+shift+B；Firefox：在标签栏的空白处点击右键，并选中“书签工具栏”；360浏览器：在标题栏上点击右键，并选中“收藏栏”</p>
       <a href="/"><img id="logo" src="/img/logo/dark-large.svg" alt="KEEER Logo" /></a>
-      <div id="links">
-        <a href="https://keeer.net/">首页</a>
-        <a href="https://blog.keeer.net/">博客</a>
-        <a href="https://forum.keeer.net/">论坛</a>
-        <a href="https://git.keeer.net/">KEEER Git</a>
-        <a href="/labs/">KEEER Labs</a>
-        <a href="/autolezhiyun/">自动评教</a>
-        <a href="https://github.com/KEEER/">GitHub</a>
-        <a href="https://about.keeer.net/">Old home</a>
-        <a href="https://ten.reeek.keeer.net/">RDFZ</a>
-        <a href="/about/">关于我们</a>
-      </div>
     </div>
   </body>
 </html>

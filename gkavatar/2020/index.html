@@ -34,8 +34,17 @@
     #upload-avatar { margin: 100px 0; }
     main {
       text-align: center;
+      width: 100%;
       max-width: 720px;
-      margin: 16px;
+    }
+    main > div { margin: 16px; }
+    #step-select { margin: 0; }
+    #about { margin: 16px; }
+    #banner {
+      margin: 0;
+      background-image: url('https://keeer-pub.oss-cn-beijing.aliyuncs.com/rdfzgkavt/2020/banner.jpg');
+      background-position: center;
+      background-size: cover;
     }
     .canvas-container { display: inline-block; }
     </style>
@@ -50,9 +59,8 @@
     </header>
     <main class="mdc-top-app-bar--fixed-adjust">
       <div id="step-select">
-        <button id="upload-avatar" class="mdc-button mdc-button--raised">选择你的头像</button>
+        <p id="banner"><button id="upload-avatar" class="mdc-button mdc-button--raised">选择你的头像</button></p>
         <input type="file" id="image" accept="image/*" hidden>
-        <hr>
         <div id="about">
           <h2 class="mdc-typography--headline4">版权</h2>
           <p class="mdc-typography--body1">“高考加油”文字为 Egamad 书写</p>

@@ -1,0 +1,178 @@
+"use strict";
+
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var $ = function $(s) {
+  return document.querySelector(s);
+};
+
+var show = function show(el) {
+  return el.style.display = '';
+};
+
+var hide = function hide(el) {
+  return el.style.display = 'none';
+};
+
+var uploadEl = $('#image');
+var uploadButton = $('#upload-avatar');
+var canvasEl = $('#main-canvas');
+var saveButton = $('#save');
+var resultImageEl = $('#result-image');
+var backButton = $('#back');
+var back1Button = $('#back-1');
+var styles = [0, 1, 2].map(function (i) {
+  return "https://keeer-pub.oss-cn-beijing.aliyuncs.com/rdfzgkavt/2020/style".concat(i, ".png");
+});
+var styleButtons = styles.map(function (_, i) {
+  return $("#style-".concat(i));
+});
+var steps = ['select', 'edit', 'save'].map(function (x) {
+  return $("#step-".concat(x));
+});
+
+var focusStep = function focusStep(i) {
+  return steps.forEach(function (el, j) {
+    return i === j ? show(el) : hide(el);
+  });
+};
+
+focusStep(0);
+fabric.Object.prototype.transparentCorners = false;
+fabric.Object.prototype.cornerSize = 30;
+var canvas = null,
+    cover = null,
+    currentStyle = 0;
+uploadButton.addEventListener('click', function () {
+  uploadEl.click();
+  ga('send', 'event', 'upload-click');
+});
+uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  var _canvas, images, avatar;
+
+  return regeneratorRuntime.wrap(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          uploadButton.disabled = true;
+          ga('send', 'event', 'upload-done');
+
+          if (canvas) {
+            (_canvas = canvas).remove.apply(_canvas, _toConsumableArray(canvas.getObjects()));
+          } else {
+            show(canvasEl);
+            canvas = new fabric.Canvas(canvasEl);
+            canvas.setDimensions({
+              width: '300px',
+              height: '300px'
+            }, {
+              cssOnly: true
+            });
+          }
+
+          _context.next = 5;
+          return Promise.all([[URL.createObjectURL(uploadEl.files[0]), 1024, {}], [styles[0], 800, {
+            left: 512,
+            top: 338,
+            angle: 15,
+            crossOrigin: 'anonymous'
+          }]].map(function (_ref2) {
+            var _ref3 = _slicedToArray(_ref2, 3),
+                u = _ref3[0],
+                h = _ref3[1],
+                o = _ref3[2];
+
+            return new Promise(function (r) {
+              return fabric.Image.fromURL(u, function (img) {
+                return r(img.scaleToHeight(h));
+              }, o);
+            });
+          }));
+
+        case 5:
+          images = _context.sent;
+          avatar = images[0];
+          cover = images[1];
+          canvas.setBackgroundImage(avatar);
+          cover.setControlsVisibility({
+            mb: false,
+            ml: false,
+            mr: false,
+            mt: false
+          });
+          canvas.add(cover);
+          focusStep(1);
+          uploadButton.disabled = false;
+
+        case 13:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _callee);
+})));
+saveButton.addEventListener('click', function () {
+  ga('send', 'event', 'save-click');
+  ga('send', 'event', "save-click-".concat(currentStyle));
+  saveButton.disabled = true;
+  resultImageEl.src = canvas.toDataURL();
+  focusStep(2);
+  saveButton.disabled = false;
+});
+styleButtons.forEach(function (b, i) {
+  return b.addEventListener('click', function () {
+    if (!cover) return;
+    ga('send', 'event', "style-".concat(i, "-click"));
+    currentStyle = i;
+    cover.setSrc(styles[i], function () {
+      return canvas.renderAll();
+    });
+  });
+});
+backButton.addEventListener('click', function () {
+  focusStep(0);
+  ga('send', 'event', 'back-click');
+});
+back1Button.addEventListener('click', function () {
+  focusStep(0);
+  ga('send', 'event', 'back-1-click');
+});
+var ripples = [].concat(_toConsumableArray(document.querySelectorAll('[data-ripple]')), _toConsumableArray(document.querySelectorAll('.mdc-button')));
+
+var _iterator = _createForOfIteratorHelper(ripples),
+    _step;
+
+try {
+  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    var el = _step.value;
+    mdc.ripple.MDCRipple.attachTo(el);
+  }
+} catch (err) {
+  _iterator.e(err);
+} finally {
+  _iterator.f();
+}

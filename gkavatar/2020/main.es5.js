@@ -150,6 +150,8 @@ styleButtons.forEach(function (b, i) {
     currentStyle = i;
     cover.setSrc(styles[i], function () {
       return canvas.renderAll();
+    }, {
+      crossOrigin: 'anonymous'
     });
   });
 });

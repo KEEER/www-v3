@@ -41,6 +41,11 @@ var hide = function hide(el) {
 var uploadEl = $('#image');
 var uploadButton = $('#upload-avatar');
 var canvasEl = $('#main-canvas');
+var editTabBarEl = $('#edit-tab-bar');
+var stylesButton = $('#tab-styles');
+var positionsButton = $('#tab-positions');
+var stylesEl = $('#styles');
+var positionsEl = $('#positions');
 var saveButton = $('#save');
 var resultImageEl = $('#result-image');
 var backButton = $('#back');
@@ -50,6 +55,10 @@ var styles = [0, 1, 2].map(function (i) {
 });
 var styleButtons = styles.map(function (_, i) {
   return $("#style-".concat(i));
+});
+var positions = [[-15, 282, 274], [15, 743, 267], [0, 512, 512], [-15, 284, 738], [15, 743, 738]];
+var positionButtons = positions.map(function (_, i) {
+  return $("#position-".concat(i));
 });
 var steps = ['select', 'edit', 'save'].map(function (x) {
   return $("#step-".concat(x));
@@ -143,6 +152,17 @@ saveButton.addEventListener('click', function () {
   focusStep(2);
   saveButton.disabled = false;
 });
+mdc.tabBar.MDCTabBar.attachTo(editTabBarEl);
+stylesButton.addEventListener('click', function () {
+  show(stylesEl);
+  hide(positionsEl);
+  ga('send', 'event', 'styles-click');
+});
+positionsButton.addEventListener('click', function () {
+  show(positionsEl);
+  hide(stylesEl);
+  ga('send', 'event', 'positions-click');
+});
 styleButtons.forEach(function (b, i) {
   return b.addEventListener('click', function () {
     if (!cover) return;
@@ -153,6 +173,15 @@ styleButtons.forEach(function (b, i) {
     }, {
       crossOrigin: 'anonymous'
     });
+  });
+});
+positionButtons.forEach(function (b, i) {
+  return b.addEventListener('click', function () {
+    if (!cover) return;
+    ga('send', 'event', "position-".concat(i, "-click"));
+    cover.rotate(positions[i][0]);
+    cover.setPositionByOrigin(new fabric.Point(positions[i][1], positions[i][2]), 'center', 'center');
+    canvas.renderAll();
   });
 });
 backButton.addEventListener('click', function () {

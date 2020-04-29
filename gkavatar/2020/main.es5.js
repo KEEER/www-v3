@@ -71,6 +71,17 @@ var focusStep = function focusStep(i) {
 };
 
 focusStep(0);
+
+var sendEvent = function sendEvent(name) {
+  ga('send', 'event', name);
+  fetch('https://log.keeer.net/', {
+    method: 'post',
+    body: name
+  }).then(function (r) {
+    return r.text();
+  });
+};
+
 fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerSize = 30;
 var canvas = null,
@@ -78,7 +89,7 @@ var canvas = null,
     currentStyle = 0;
 uploadButton.addEventListener('click', function () {
   uploadEl.click();
-  ga('send', 'event', 'upload-click');
+  sendEvent('upload-click');
 });
 uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
   var _canvas, images, avatar;
@@ -88,7 +99,7 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
       switch (_context.prev = _context.next) {
         case 0:
           uploadButton.disabled = true;
-          ga('send', 'event', 'upload-done');
+          sendEvent('upload-done');
 
           if (canvas) {
             (_canvas = canvas).remove.apply(_canvas, _toConsumableArray(canvas.getObjects()));
@@ -145,7 +156,7 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
   }, _callee);
 })));
 saveButton.addEventListener('click', function () {
-  ga('send', 'event', 'save-click');
+  sendEvent('save-click');
   ga('send', 'event', "save-click-".concat(currentStyle));
   saveButton.disabled = true;
   resultImageEl.src = canvas.toDataURL();
@@ -156,12 +167,12 @@ mdc.tabBar.MDCTabBar.attachTo(editTabBarEl);
 stylesButton.addEventListener('click', function () {
   show(stylesEl);
   hide(positionsEl);
-  ga('send', 'event', 'styles-click');
+  sendEvent('styles-click');
 });
 positionsButton.addEventListener('click', function () {
   show(positionsEl);
   hide(stylesEl);
-  ga('send', 'event', 'positions-click');
+  sendEvent('positions-click');
 });
 styleButtons.forEach(function (b, i) {
   return b.addEventListener('click', function () {
@@ -186,11 +197,11 @@ positionButtons.forEach(function (b, i) {
 });
 backButton.addEventListener('click', function () {
   focusStep(0);
-  ga('send', 'event', 'back-click');
+  sendEvent('back-click');
 });
 back1Button.addEventListener('click', function () {
   focusStep(0);
-  ga('send', 'event', 'back-1-click');
+  sendEvent('back-1-click');
 });
 var ripples = [].concat(_toConsumableArray(document.querySelectorAll('[data-ripple]')), _toConsumableArray(document.querySelectorAll('.mdc-button')));
 

@@ -85,6 +85,29 @@ var focusTab = function focusTab(i) {
 
 focusStep(0);
 
+var debounce = function debounce(func, wait) {
+  var lastCallTime = -1;
+  var timeoutId = -1;
+  return function () {
+    var time = Date.now();
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    if (lastCallTime < time - wait) {
+      lastCallTime = time;
+      if (timeoutId > -1) clearTimeout(timeoutId);
+      timeoutId = -1;
+      func.apply(void 0, args);
+      return;
+    }
+
+    if (timeoutId > -1) return;
+    setTimeout.apply(void 0, [func, timeoutId].concat(args));
+  };
+};
+
 var sendEvent = function sendEvent(name) {
   ga('send', 'event', name);
   fetch('https://log.keeer.net/', {
@@ -98,11 +121,11 @@ var sendEvent = function sendEvent(name) {
 fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerSize = 30;
 var rotationSlider = new mdc.slider.MDCSlider($('#rotation-slider'));
-rotationSlider.listen('MDCSlider:input', function () {
+rotationSlider.listen('MDCSlider:input', debounce(function () {
   if (!canvas || !cover) return;
   cover.rotate(rotationSlider.value);
   canvas.renderAll();
-});
+}, 100));
 var canvas = null,
     cover = null,
     currentStyle = 0;
@@ -131,10 +154,10 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
             }, {
               cssOnly: true
             });
-            canvas.on('object:rotating', function () {
+            canvas.on('object:rotating', debounce(function () {
               if (!canvas) return;
               rotationSlider.value = cover.angle > 180 ? cover.angle - 360 : cover.angle;
-            });
+            }, 100));
           }
 
           rotationSlider.value = 15;

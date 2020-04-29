@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/tab-scroller@3.1.0/dist/mdc.tab-scroller.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/tab-indicator@3.1.0/dist/mdc.tab-indicator.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/tab@3.1.0/dist/mdc.tab.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@material/slider@3.1.0/dist/mdc.slider.min.css">
     <style>
     html, body { margin: 0; }
     body {
@@ -125,6 +126,15 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
+                <button id="tab-rotations" class="mdc-tab" role="tab" tabindex="1">
+                  <span class="mdc-tab__content">
+                    <span class="mdc-tab__text-label">旋转</span>
+                  </span>
+                  <span class="mdc-tab-indicator">
+                    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -141,10 +151,24 @@
           <p class="mdc-typography--body1">您可以使用下面的工具快速定位：</p>
           <div id="positions-container">
             <button id="position-0" style="left: 0;top: 0;" class="mdc-button mdc-button--outlined">↖</button>
-            <button id="position-1" style="right: 0;top: 0;" class="mdc-button mdc-button--outlined">↗</button id="position-0">
-            <button id="position-2" style="top: 84px;left: 84px;" class="mdc-button mdc-button--outlined">·</button id="position-0">
-            <button id="position-3" style="bottom: 0;left: 0;" class="mdc-button mdc-button--outlined">↙</button id="position-0">
-            <button id="position-4" style="bottom: 0;right: 0;" class="mdc-button mdc-button--outlined">↘</button id="position-0">
+            <button id="position-1" style="right: 0;top: 0;" class="mdc-button mdc-button--outlined">↗</button>
+            <button id="position-2" style="top: 84px;left: 84px;" class="mdc-button mdc-button--outlined">·</button>
+            <button id="position-3" style="bottom: 0;left: 0;" class="mdc-button mdc-button--outlined">↙</button>
+            <button id="position-4" style="bottom: 0;right: 0;" class="mdc-button mdc-button--outlined">↘</button>
+          </div>
+        </div>
+        <div id="rotations">
+          <p class="mdc-typography--body1">您可以使用下面的工具指定旋转角度：</p>
+          <div id="rotations-container">
+            <button id="rotation-0" class="mdc-button mdc-button--outlined">-30°</button>
+            <button id="rotation-1" class="mdc-button mdc-button--outlined">-15°</button>
+            <button id="rotation-2" class="mdc-button mdc-button--outlined">0°</button>
+            <button id="rotation-3" class="mdc-button mdc-button--outlined">15°</button>
+            <button id="rotation-4" class="mdc-button mdc-button--outlined">30°</button>
+          </div>
+          <div id="rotation-slider" class="mdc-slider" tabindex="0" role="slider" aria-valuemin="-180" aria-valuemax="180" aria-valuenow="0" aria-label="Select Value">
+            <div class="mdc-slider__track-container"><div class="mdc-slider__track"></div></div>
+            <div class="mdc-slider__thumb-container"><svg class="mdc-slider__thumb" width="21" height="21"><circle cx="10.5" cy="10.5" r="7.875"></circle></svg><div class="mdc-slider__focus-ring"></div></div>
           </div>
         </div>
         <button id="save" class="mdc-button mdc-button--raised">确定</button>
@@ -159,6 +183,7 @@
     <script src="https://keeer-pub.oss-cn-beijing.aliyuncs.com/rdfzgkavt/2020/fabric.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@material/ripple@3.1.0/dist/mdc.ripple.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@material/tab-bar@3.1.0/dist/mdc.tabBar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@material/slider@3.1.0/dist/mdc.slider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.5/runtime.js"></script>
     <script src="main.es5.js"></script>
     <script>

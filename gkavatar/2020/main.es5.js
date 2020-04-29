@@ -42,10 +42,13 @@ var uploadEl = $('#image');
 var uploadButton = $('#upload-avatar');
 var canvasEl = $('#main-canvas');
 var editTabBarEl = $('#edit-tab-bar');
-var stylesButton = $('#tab-styles');
-var positionsButton = $('#tab-positions');
-var stylesEl = $('#styles');
-var positionsEl = $('#positions');
+var tabs = ['styles', 'positions', 'rotations'];
+var tabButtons = tabs.map(function (x) {
+  return $("#tab-".concat(x));
+});
+var tabEls = tabs.map(function (x) {
+  return $('#' + x);
+});
 var saveButton = $('#save');
 var resultImageEl = $('#result-image');
 var backButton = $('#back');
@@ -60,12 +63,22 @@ var positions = [[-15, 282, 274], [15, 743, 267], [0, 512, 512], [-15, 284, 738]
 var positionButtons = positions.map(function (_, i) {
   return $("#position-".concat(i));
 });
+var rotations = [-30, -15, 0, 15, 30];
+var rotationButtons = rotations.map(function (_, i) {
+  return $("#rotation-".concat(i));
+});
 var steps = ['select', 'edit', 'save'].map(function (x) {
   return $("#step-".concat(x));
 });
 
 var focusStep = function focusStep(i) {
   return steps.forEach(function (el, j) {
+    return i === j ? show(el) : hide(el);
+  });
+};
+
+var focusTab = function focusTab(i) {
+  return tabEls.forEach(function (el, j) {
     return i === j ? show(el) : hide(el);
   });
 };
@@ -84,6 +97,12 @@ var sendEvent = function sendEvent(name) {
 
 fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerSize = 30;
+var rotationSlider = new mdc.slider.MDCSlider($('#rotation-slider'));
+rotationSlider.listen('MDCSlider:input', function () {
+  if (!canvas || !cover) return;
+  cover.rotate(rotationSlider.value);
+  canvas.renderAll();
+});
 var canvas = null,
     cover = null,
     currentStyle = 0;
@@ -112,9 +131,14 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
             }, {
               cssOnly: true
             });
+            canvas.on('object:rotating', function () {
+              if (!canvas) return;
+              rotationSlider.value = cover.angle > 180 ? cover.angle - 360 : cover.angle;
+            });
           }
 
-          _context.next = 5;
+          rotationSlider.value = 15;
+          _context.next = 6;
           return Promise.all([[URL.createObjectURL(uploadEl.files[0]), 1024, {}], [styles[0], 800, {
             left: 512,
             top: 338,
@@ -133,11 +157,18 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
             });
           }));
 
-        case 5:
+        case 6:
           images = _context.sent;
           avatar = images[0];
           cover = images[1];
-          canvas.setBackgroundImage(avatar);
+          canvas.setBackgroundImage(avatar, function () {
+            return canvas.renderAll();
+          }, {
+            left: 512,
+            top: 512,
+            originX: 'center',
+            originY: 'center'
+          });
           cover.setControlsVisibility({
             mb: false,
             ml: false,
@@ -146,9 +177,10 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
           });
           canvas.add(cover);
           focusStep(1);
+          rotationSlider.foundation_.init();
           uploadButton.disabled = false;
 
-        case 13:
+        case 15:
         case "end":
           return _context.stop();
       }
@@ -157,27 +189,26 @@ uploadEl.addEventListener('change', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*
 })));
 saveButton.addEventListener('click', function () {
   sendEvent('save-click');
-  ga('send', 'event', "save-click-".concat(currentStyle));
+  sendEvent("save-click-".concat(currentStyle));
   saveButton.disabled = true;
   resultImageEl.src = canvas.toDataURL();
   focusStep(2);
   saveButton.disabled = false;
 });
 mdc.tabBar.MDCTabBar.attachTo(editTabBarEl);
-stylesButton.addEventListener('click', function () {
-  show(stylesEl);
-  hide(positionsEl);
-  sendEvent('styles-click');
+tabButtons.forEach(function (b, i) {
+  return b.addEventListener('click', function () {
+    focusTab(i);
+    sendEvent("tab-".concat(tabs[i], "-click"));
+  });
 });
-positionsButton.addEventListener('click', function () {
-  show(positionsEl);
-  hide(stylesEl);
-  sendEvent('positions-click');
+tabButtons[2].addEventListener('click', function () {
+  return rotationSlider.foundation_.init();
 });
 styleButtons.forEach(function (b, i) {
   return b.addEventListener('click', function () {
     if (!cover) return;
-    ga('send', 'event', "style-".concat(i, "-click"));
+    sendEvent("style-".concat(i, "-click"));
     currentStyle = i;
     cover.setSrc(styles[i], function () {
       return canvas.renderAll();
@@ -189,9 +220,18 @@ styleButtons.forEach(function (b, i) {
 positionButtons.forEach(function (b, i) {
   return b.addEventListener('click', function () {
     if (!cover) return;
-    ga('send', 'event', "position-".concat(i, "-click"));
+    sendEvent("position-".concat(i, "-click"));
     cover.rotate(positions[i][0]);
     cover.setPositionByOrigin(new fabric.Point(positions[i][1], positions[i][2]), 'center', 'center');
+    canvas.renderAll();
+  });
+});
+rotationButtons.forEach(function (b, i) {
+  return b.addEventListener('click', function () {
+    if (!cover) return;
+    sendEvent("rotation-".concat(i, "-click"));
+    cover.rotate(rotations[i]);
+    rotationSlider.value = rotations[i];
     canvas.renderAll();
   });
 });

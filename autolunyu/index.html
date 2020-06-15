@@ -5,13 +5,16 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#002d4d" />
-    <title>自动评教</title>
+    <title>自动评教 2020</title>
     <style>
     html,body{
       width: 100%;
       height: 100%;
       margin: 0;
-      display: table;
+      display: -webkit-flex;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
       background-color: #f5fafd;
       color: #002d4d;
@@ -81,7 +84,7 @@
   <body>
     <div id="wrapper">
       <p>在电脑上打开此页；</p>
-      <a class="link" href="javascript:iid=setInterval(function(){var inputs=document.getElementsByClassName('el-input__inner');for(var i=0;i<inputs.length;i++){inputs[i].value=10;inputs[i].dispatchEvent(new Event('change'))};setTimeout(function(){var next=document.getElementsByClassName('el-button--primary')[0];if(next.innerText.indexOf('下一个')>-1)next.click();else{alert('完成！请手动点击提交。');clearInterval(iid)}},20)},1500);" onclick="javascript:alert('不要点我！拖我！');event.preventDefault();">自动评教</a>←拖我到浏览器书签栏(Win/Linux) / 右键复制链接，粘贴至任意书签(Mac)
+      <a class="link" href="javascript:var iid=setInterval(function(){var x=document.getElementsByClassName('el-slider__runway');for(var i=0;i<x.length;i++){var e=new Event('click');e.clientX=1048576;x[i].dispatchEvent(e)};setTimeout(function(){var next=document.getElementsByClassName('el-button--primary')[0];if(next.innerText.indexOf(decodeURIComponent('%E4%B8%8B%E4%B8%80%E4%B8%AA'))>-1)next.click();else{alert(decodeURIComponent('%E5%AE%8C%E6%88%90%EF%BC%81%E8%AF%B7%E6%89%8B%E5%8A%A8%E7%82%B9%E5%87%BB%E6%8F%90%E4%BA%A4%E3%80%82'));clearInterval(iid)}},20)},1500);" onclick="javascript:alert('不要点我！拖我！');event.preventDefault();">自动评教</a>←拖我到浏览器书签栏(Win/Linux) / 右键复制链接，粘贴至任意书签(Mac)
       <p>然后在评教页面点击这个标签，最后提交。</p>
       <p>客页KEEER良心出品。</p>
       <p>显示书签栏方法：Chrome：按 ctrl+shift+B；Firefox：在标签栏的空白处点击右键，并选中“书签工具栏”；360浏览器：在标题栏上点击右键，并选中“收藏栏”</p>
